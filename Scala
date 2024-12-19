@@ -1,0 +1,281 @@
+prime :
+import scala.io.StdIn
+
+object PrimeCheck {
+  def main(args: Array[String]): Unit = {
+    // Prompt the user for input
+    val number = StdIn.readLine("Enter a number to check if it is prime: ").toInt
+
+    if (number <= 1) {
+      println(s"$number is not a prime number.")
+    } else {
+      var isPrime = true
+
+      // Check divisors from 2 to sqrt(number)
+      for (i <- 2 to Math.sqrt(number).toInt if isPrime) {
+        if (number % i == 0) {
+          isPrime = false
+        }
+      }
+
+      // Display the result
+      if (isPrime) {
+        println(s"$number is a prime number.")
+      } else {
+        println(s"$number is not a prime number.")
+      }
+    }
+  }
+}
+
+
+
+
+fact:
+
+import scala.io.StdIn
+
+object Factorial {
+  def main(args: Array[String]): Unit = {
+    // Prompt the user for input
+    val number = StdIn.readLine("Enter a number to find its factorial: ").toInt
+
+    if (number < 0) {
+      println("Factorial of a negative number is not defined.")
+    } else {
+      // Calculate factorial using a loop
+      var factorial = 1
+      for (i <- 1 to number) {
+        factorial *= i
+      }
+
+      // Display the result
+      println(s"The factorial of $number is $factorial.")
+    }
+  }
+}
+
+
+vowel:
+
+import scala.io.StdIn
+
+object VowelCheck {
+  def main(args: Array[String]): Unit = {
+    // Prompt the user for input
+    val word = StdIn.readLine("Enter a word to check if it starts with a vowel: ").toLowerCase
+
+    // Check if the first character is a vowel
+    if (word.nonEmpty && "aeiou".contains(word(0))) {
+      println(s"The word '$word' starts with a vowel.")
+    } else if (word.nonEmpty) {
+      println(s"The word '$word' does not start with a vowel.")
+    } else {
+      println("You entered an empty word.")
+    }
+  }
+}
+
+
+bank:
+
+import scala.io.StdIn
+
+// Class to represent a bank account
+class BankAccount(var balance: Double) {
+  
+  // Deposit method
+  def deposit(amount: Double): Unit = {
+    if (amount > 0) {
+      balance += amount
+      println(s"Deposited $$ $amount. New balance is $$ $balance.")
+    } else {
+      println("Deposit amount must be positive.")
+    }
+  }
+  
+  // Withdraw method
+  def withdraw(amount: Double): Unit = {
+    if (amount > 0 && amount <= balance) {
+      balance -= amount
+      println(s"Withdrew $$ $amount. New balance is $$ $balance.")
+    } else if (amount > balance) {
+      println("Insufficient funds!")
+    } else {
+      println("Withdraw amount must be positive.")
+    }
+  }
+
+  // Display balance
+  def showBalance(): Unit = {
+    println(s"Current balance: $$ $balance")
+  }
+}
+
+object BankApp {
+  def main(args: Array[String]): Unit = {
+    // Create a new bank account with initial balance
+    val account = new BankAccount(1000.00) // Starting balance of $1000
+
+    // Display initial balance
+    account.showBalance()
+
+    var continue = true
+    while (continue) {
+      println("\nChoose an option:")
+      println("1. Deposit")
+      println("2. Withdraw")
+      println("3. Check Balance")
+      println("4. Exit")
+
+      // Read user choice
+      val choice = StdIn.readInt()
+
+      choice match {
+        case 1 =>
+          print("Enter amount to deposit: ")
+          val depositAmount = StdIn.readDouble()
+          account.deposit(depositAmount)
+          
+        case 2 =>
+          print("Enter amount to withdraw: ")
+          val withdrawAmount = StdIn.readDouble()
+          account.withdraw(withdrawAmount)
+          
+        case 3 =>
+          account.showBalance()
+          
+        case 4 =>
+          println("Exiting...")
+          continue = false
+          
+        case _ =>
+          println("Invalid option! Please try again.")
+      }
+    }
+  }
+}
+
+
+library::
+
+import scala.io.StdIn
+
+// Class representing a Book in the library
+class Book(val title: String, val author: String, var isAvailable: Boolean) {
+
+  // Method to display book details
+  def displayDetails(): Unit = {
+    val availability = if (isAvailable) "Available" else "Not Available"
+    println(s"Title: $title, Author: $author, Status: $availability")
+  }
+
+  // Method to issue the book
+  def issueBook(): Unit = {
+    if (isAvailable) {
+      isAvailable = false
+      println(s"Book '$title' has been issued.")
+    } else {
+      println(s"Sorry, '$title' is currently not available.")
+    }
+  }
+
+  // Method to return the book
+  def returnBook(): Unit = {
+    if (!isAvailable) {
+      isAvailable = true
+      println(s"Book '$title' has been returned.")
+    } else {
+      println(s"Book '$title' was not issued.")
+    }
+  }
+}
+
+object LibraryManagement {
+
+  // List to hold all books in the library
+  var books: List[Book] = List()
+
+  def addBook(title: String, author: String): Unit = {
+    val newBook = new Book(title, author, isAvailable = true)
+    books = books :+ newBook
+    println(s"Book '$title' by $author has been added to the library.")
+  }
+
+  def displayBooks(): Unit = {
+    if (books.isEmpty) {
+      println("No books available in the library.")
+    } else {
+      println("Books in the library:")
+      books.foreach(book => book.displayDetails())
+    }
+  }
+
+  def searchBook(title: String): Unit = {
+    val foundBooks = books.filter(book => book.title.toLowerCase.contains(title.toLowerCase))
+    if (foundBooks.isEmpty) {
+      println(s"No books found with the title containing '$title'.")
+    } else {
+      foundBooks.foreach(book => book.displayDetails())
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    var continue = true
+
+    while (continue) {
+      println("\nLibrary Management System")
+      println("1. Add a Book")
+      println("2. Display All Books")
+      println("3. Issue a Book")
+      println("4. Return a Book")
+      println("5. Search for a Book")
+      println("6. Exit")
+
+      // Read user input
+      val choice = StdIn.readInt()
+
+      choice match {
+        case 1 =>
+          print("Enter the title of the book: ")
+          val title = StdIn.readLine()
+          print("Enter the author of the book: ")
+          val author = StdIn.readLine()
+          addBook(title, author)
+
+        case 2 =>
+          displayBooks()
+
+        case 3 =>
+          print("Enter the title of the book to issue: ")
+          val issueTitle = StdIn.readLine()
+          val bookToIssue = books.find(book => book.title.equalsIgnoreCase(issueTitle))
+          bookToIssue match {
+            case Some(book) => book.issueBook()
+            case None => println("Book not found.")
+          }
+
+        case 4 =>
+          print("Enter the title of the book to return: ")
+          val returnTitle = StdIn.readLine()
+          val bookToReturn = books.find(book => book.title.equalsIgnoreCase(returnTitle))
+          bookToReturn match {
+            case Some(book) => book.returnBook()
+            case None => println("Book not found.")
+          }
+
+        case 5 =>
+          print("Enter the title or part of the title to search: ")
+          val searchTitle = StdIn.readLine()
+          searchBook(searchTitle)
+
+        case 6 =>
+          println("Exiting the library management system.")
+          continue = false
+
+        case _ =>
+          println("Invalid option. Please try again.")
+      }
+    }
+  }
+}
