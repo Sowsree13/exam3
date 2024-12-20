@@ -1,0 +1,27 @@
+[24-11-2024 23:58] Sowmyasree: name: Super-Linter
+
+on: push
+
+jobs:
+  super-lint:
+    name: Lint code base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+[25-11-2024 00:08] Sowmyasree: 
+def hello():
+    print("hi")
+
+
+def bye():
+    print("bye")
+
+
+print(hello())
